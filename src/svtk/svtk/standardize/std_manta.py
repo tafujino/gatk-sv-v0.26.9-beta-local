@@ -85,7 +85,7 @@ class MantaStandardizer(VCFStandardizer):
         elif svtype == 'DUP':
             strands = '-+'
         elif svtype == 'INS':
-            strands = '+-'
+            strands = '-+'
 
         if not is_smaller_chrom(std_rec.chrom, std_rec.info['CHR2']):
             strands = strands[::-1]

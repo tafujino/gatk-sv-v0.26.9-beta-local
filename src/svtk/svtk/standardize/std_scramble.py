@@ -18,7 +18,7 @@ class ScrambleStandardizer(VCFStandardizer):
         std_rec.stop = raw_rec.pos + 1
         std_rec.info["SVTYPE"] = raw_rec.info["SVTYPE"]
         std_rec.info["SVLEN"] = raw_rec.info["SVLEN"]
-        std_rec.info["STRANDS"] = "+-"
+        std_rec.info["STRANDS"] = "-+"
         std_rec.info["ALGORITHMS"] = ["scramble"]
 
         return std_rec

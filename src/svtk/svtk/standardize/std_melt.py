@@ -29,7 +29,7 @@ class MeltStandardizer(VCFStandardizer):
         std_rec.stop = raw_rec.pos + 1
 
         # Add STRANDS
-        std_rec.info['STRANDS'] = '+-'
+        std_rec.info['STRANDS'] = '-+'
 
         # Add CHR2
         std_rec.info['CHR2'] = raw_rec.chrom

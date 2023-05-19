@@ -94,7 +94,7 @@ def convert(record: pysam.VariantRecord,
         new_record.info['CHR2'] = contig
         if 'SVLEN' not in record.info:
             new_record.info['SVLEN'] = -1
-        new_record.info['STRANDS'] = '+-'
+        new_record.info['STRANDS'] = '-+'
     elif svtype == 'BND':
         new_record.stop = record.info['END2']
         new_record.info['SVLEN'] = -1
