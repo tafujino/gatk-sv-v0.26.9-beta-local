@@ -17,7 +17,7 @@ workflow FilterGenotypes {
     Float fmax_beta = 0.5  # Recommended range [0.3, 0.5] (use lower values for higher specificity)
 
     # One of the following must be provided
-    File? truth_json  # If given, SL cutoffs will be automatically optimized. Overrides sl_filter_args. TODO: UNIMPLEMENTED!
+    File? truth_json  # If given, SL cutoffs will be automatically optimized. Overrides sl_filter_args.
     String? sl_filter_args  # Explicitly set SL cutoffs. See apply_sl_filter.py for arguments.
 
     Int optimize_vcf_records_per_shard = 50000
