@@ -19,7 +19,7 @@ workflow GatherSampleEvidence {
 
     # Note: raw and "safe" CRAM/BAM IDs can be generated with GetSampleID
     String sample_id
-
+    Boolean rehead = false
     # Evidence collection flags
     Boolean collect_coverage = true
     Boolean collect_pesr = true
@@ -114,7 +114,6 @@ workflow GatherSampleEvidence {
   Boolean run_melt = defined(melt_docker)
   Boolean run_scramble = defined(scramble_docker)
   Boolean run_wham = defined(wham_docker)
-  Boolean rehead = false
 
   Boolean is_bam_ = basename(bam_or_cram_file, ".bam") + ".bam" == basename(bam_or_cram_file)
   String index_ext_ = if is_bam_ then ".bai" else ".crai"
