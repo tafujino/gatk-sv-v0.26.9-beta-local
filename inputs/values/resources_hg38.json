@@ -18,6 +18,7 @@
   "external_af_ref_bed" : "gs://gcp-public-data--broad-references/hg38/v0/sv-resources/resources/v1/gnomad_AF/gnomad_v2.1_sv.sites.GRCh38.bed.gz",
   "external_af_ref_bed_prefix" : "gnomad_v2.1_sv",
   "genome_file" : "gs://gcp-public-data--broad-references/hg38/v0/sv-resources/resources/v1/hg38.genome",
+  "hg38_header_sq" : "gs://fc-secure-7b4e631c-ed86-4a0d-8023-5123cdac0556/hg38_SQ_header/hg38_header_sq.sam",
   "manta_region_bed" : "gs://gcp-public-data--broad-references/hg38/v0/sv-resources/resources/v1/primary_contigs_plus_mito.bed.gz",
   "mei_bed" : "gs://gcp-public-data--broad-references/hg38/v0/sv-resources/resources/v1/mei_hg38.bed.gz",
   "melt_std_vcf_header" : "gs://gatk-sv-resources-public/hg38/v0/sv-resources/resources/v1/melt_standard_vcf_header.txt",

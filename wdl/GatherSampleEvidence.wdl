@@ -34,6 +34,8 @@ workflow GatherSampleEvidence {
     File reference_index    # Index (.fai), must be in same dir as fasta
     File reference_dict     # Dictionary (.dict), must be in same dir as fasta
     String? reference_version   # Either "38" or "19"
+    File hg38_header_sq  # required if the crams for samples are custom reference subset of hg38
+
 
     # Coverage collection inputs
     File preprocessed_intervals
@@ -112,6 +114,7 @@ workflow GatherSampleEvidence {
   Boolean run_melt = defined(melt_docker)
   Boolean run_scramble = defined(scramble_docker)
   Boolean run_wham = defined(wham_docker)
+  Boolean rehead = false
 
   Boolean is_bam_ = basename(bam_or_cram_file, ".bam") + ".bam" == basename(bam_or_cram_file)
   String index_ext_ = if is_bam_ then ".bai" else ".crai"
@@ -124,7 +127,14 @@ workflow GatherSampleEvidence {
       reads_index = bam_or_cram_index_,
       runtime_attr_override = runtime_attr_localize_reads
   }
-
+  if (rehead){
+    call reheadCrams{
+      input:
+        reads_path = bam_or_cram_file,
+        reads_index = bam_or_cram_index_,
+        hg38_header_sq = hg38_header_sq
+    }
+  }
   if (revise_base) {
     call rb.CramToBamReviseBase {
       input:
@@ -350,6 +360,20 @@ task LocalizeReads {
   }
 }
 
+task reheadCrams{
+  input{
+    File reads_path
+    File reads_index
+    File hg38_header_sq
+  }
+  command<<<
+    ln -s ~{hg38_header_sq}
+    samtools view -H ~{reads_path} | grep -v @SQ > header_without_sq.sam
+    cat header_without_sq.sam ~{hg38_header_sq} >  newly_constructed_header.sam
+    samtools reheader newly_constructed_header.sam ~{reads_path}  > ~{reads_path}
+    samtools index ~{reads_path}
+  >>>
+}
 task DeleteIntermediateFiles {
   input {
     Array[File] intermediates
