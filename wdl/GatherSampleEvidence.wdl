@@ -129,16 +129,16 @@ workflow GatherSampleEvidence {
   if (rehead){
     call reheadCrams{
       input:
-        reads_path = bam_or_cram_file,
-        reads_index = bam_or_cram_index_,
+        reads_path = LocalizeReads.output_file,
+        reads_index = LocalizeReads.output_index,
         hg38_header_sq = hg38_header_sq
     }
   }
   if (revise_base) {
     call rb.CramToBamReviseBase {
       input:
-        cram_file = LocalizeReads.output_file,
-        cram_index = LocalizeReads.output_index,
+        cram_file = select_first([reheadCrams.output_file, LocalizeReads.output_file]),
+        cram_index = select_first([reheadCrams.output_index, LocalizeReads.output_index]),
         reference_fasta = reference_fasta,
         reference_index = reference_index,
         contiglist = select_first([primary_contigs_fai]),
@@ -149,8 +149,8 @@ workflow GatherSampleEvidence {
     }
   }
 
-  File reads_file_ = select_first([CramToBamReviseBase.bam_file, LocalizeReads.output_file])
-  File reads_index_ = select_first([CramToBamReviseBase.bam_index, LocalizeReads.output_index])
+  File reads_file_ = select_first([reheadCrams.output_file, LocalizeReads.output_file])
+  File reads_index_ = select_first([reheadCrams.output_index, LocalizeReads.output_index])
 
   if (collect_coverage || run_melt || run_module_metrics) {
     call cov.CollectCounts {
@@ -364,14 +364,38 @@ task reheadCrams{
     File reads_path
     File reads_index
     File hg38_header_sq
+    String samtools_cloud_docker
+    RuntimeAttr? runtime_attr_override
   }
+  RuntimeAttr default_attr = object {
+                               cpu_cores: 1,
+                               mem_gb: 3.75,
+                               disk_gb: 10 + ceil(size(vcf, "GiB")),
+                               boot_disk_gb: 10,
+                               preemptible_tries: 3,
+                               max_retries: 1
+                             }
+  RuntimeAttr runtime_attr = select_first([runtime_attr_override, default_attr])
   command<<<
     ln -s ~{hg38_header_sq}
     samtools view -H ~{reads_path} | grep -v @SQ > header_without_sq.sam
     cat header_without_sq.sam ~{hg38_header_sq} >  newly_constructed_header.sam
-    samtools reheader newly_constructed_header.sam ~{reads_path}  > ~{reads_path}
-    samtools index ~{reads_path}
+    samtools reheader newly_constructed_header.sam ~{reads_path}  > new_cram.cram
+    samtools index new_cram.cram
   >>>
+  runtime {
+    cpu: select_first([runtime_attr.cpu_cores, default_attr.cpu_cores])
+    memory: select_first([runtime_attr.mem_gb, default_attr.mem_gb]) + " GiB"
+    disks: "local-disk " + select_first([runtime_attr.disk_gb, default_attr.disk_gb]) + " HDD"
+    bootDiskSizeGb: select_first([runtime_attr.boot_disk_gb, default_attr.boot_disk_gb])
+    docker: samtools_cloud_docker
+    preemptible: select_first([runtime_attr.preemptible_tries, default_attr.preemptible_tries])
+    maxRetries: select_first([runtime_attr.max_retries, default_attr.max_retries])
+  }
+  output{
+    File output_file = "new_cram.cram"
+    File output_index = "new_cram.crai"
+  }
 }
 task DeleteIntermediateFiles {
   input {
