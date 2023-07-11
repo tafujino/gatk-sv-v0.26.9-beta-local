@@ -487,7 +487,7 @@ workflow GATKSVPipelineSingleSample {
     RuntimeAttr? runtime_override_preconcat_clean_final
     RuntimeAttr? runtime_override_hail_merge_clean_final
     RuntimeAttr? runtime_override_fix_header_clean_final
-    RuntimeAttr? runtime_override_fix_bad_ends
+    RuntimeAttr? runtime_attr_format_clean
 
     RuntimeAttr? runtime_override_clean_vcf_1a
     RuntimeAttr? runtime_override_clean_vcf_2
@@ -1068,7 +1068,6 @@ workflow GATKSVPipelineSingleSample {
       discfile_index=GatherBatchEvidence.merged_PE_index,
       splitfile=GatherBatchEvidence.merged_SR,
       splitfile_index=GatherBatchEvidence.merged_SR_index,
-      ped_file=combined_ped_file,
       ref_dict=reference_dict,
       n_RD_genotype_bins=n_RD_genotype_bins,
       genotype_pesr_pesr_sepcutoff=genotype_pesr_pesr_sepcutoff,
@@ -1297,7 +1296,7 @@ workflow GATKSVPipelineSingleSample {
       runtime_override_benchmark_samples=runtime_override_benchmark_samples,
       runtime_override_split_shuffled_list=runtime_override_split_shuffled_list,
       runtime_override_merge_and_tar_shard_benchmarks=runtime_override_merge_and_tar_shard_benchmarks,
-      runtime_override_fix_bad_ends=runtime_override_fix_bad_ends
+      runtime_attr_format_clean=runtime_attr_format_clean
 
   }
 
