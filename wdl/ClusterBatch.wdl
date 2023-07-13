@@ -66,7 +66,7 @@ workflow ClusterBatch {
 
     Float? java_mem_fraction
 
-    # PlotSVCountsPerSample metrics
+    # PlotSVCountsPerSample
     Int N_IQR_cutoff_plotting = 6
 
     RuntimeAttr? runtime_attr_ids_from_vcf_list
