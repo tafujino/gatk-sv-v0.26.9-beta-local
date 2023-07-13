@@ -394,7 +394,7 @@ task reheadCrams{
   }
   output{
     File output_file = "new_cram.cram"
-    File output_index = "new_cram.crai"
+    File output_index = "new_cram.cram.crai"
   }
 }
 task DeleteIntermediateFiles {
