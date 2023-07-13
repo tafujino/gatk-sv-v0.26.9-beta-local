@@ -6,6 +6,7 @@ import "ClusterBatchMetrics.wdl" as metrics
 import "TasksClusterBatch.wdl" as tasks
 import "Utils.wdl" as util
 import "PlotSVCountsPerSample.wdl" as sv_counts
+
 workflow ClusterBatch {
   input {
     String batch
