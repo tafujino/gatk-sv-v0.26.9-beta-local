@@ -49,6 +49,9 @@ workflow ClusterBatch {
     Int pesr_breakend_window
     String? pesr_clustering_algorithm
 
+    # PlotSVCountsPerSample
+    Int? N_IQR_cutoff_plotting
+
     # Module metrics parameters
     # Run module metrics workflow at the end - on by default
     Boolean? run_module_metrics
@@ -65,9 +68,6 @@ workflow ClusterBatch {
     String sv_pipeline_docker
 
     Float? java_mem_fraction
-
-    # PlotSVCountsPerSample
-    Int N_IQR_cutoff_plotting = 6
 
     RuntimeAttr? runtime_attr_ids_from_vcf_list
     RuntimeAttr? runtime_attr_create_ploidy
