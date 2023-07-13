@@ -17,6 +17,7 @@ workflow FilterBatchSites {
 
     # PlotSVCountsPerSample metrics
     Int N_IQR_cutoff_plotting = 6
+    
     RuntimeAttr? runtime_attr_adjudicate
     RuntimeAttr? runtime_attr_rewrite_scores
     RuntimeAttr? runtime_attr_filter_annotate_vcf
