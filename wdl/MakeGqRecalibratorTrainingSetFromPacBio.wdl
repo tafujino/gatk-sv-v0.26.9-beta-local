@@ -7,12 +7,14 @@ import "Utils.wdl" as utils
 workflow MakeGqRecalibratorTrainingSetFromPacBio {
 
   input {
-    File vcf  # Cleaned GATK-formatted vcf
+    # Cleaned GATK-formatted vcf
+    # SVConcordance should be run first if the training set is a proper subset of the cohort
+    File vcf
     Array[String] training_sample_ids  # Sample IDs with PacBio or array data
     String? output_prefix
     File ploidy_table
 
-    Array[String] pacbio_sample_ids  # Corresponding to files below
+    Array[String] pacbio_sample_ids  # Corresponding to files below (must be a subset of training_sample_ids)
     Array[File] vapor_files
     Array[File] pbsv_vcfs
     Array[File] pav_vcfs

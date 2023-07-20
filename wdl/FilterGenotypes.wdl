@@ -8,7 +8,7 @@ import "TasksMakeCohortVcf.wdl" as tasks_cohort
 workflow FilterGenotypes {
 
   input {
-    File vcf  # Cleaned GATK-formatted vcf
+    File vcf  # Cleaned GATK-formatted vcf run through SVConcordance
     String? output_prefix
     File ploidy_table
 
