@@ -244,7 +244,7 @@ task DetermineGermlineContigPloidyCaseMode {
         tar xzf ~{contig_ploidy_model_tar} -C input-contig-ploidy-model
 
         read_count_files_list=~{write_lines(read_count_files)}
-        grep gz$ $read_count_files_list | xargs -l1 -P0 gunzip
+        grep gz$ $read_count_files_list | xargs -l1 -P0 gunzip -f
         sed 's/\.gz$//' $read_count_files_list | \
             awk '{print "--input "$0}' > read_count_files.args
 
@@ -361,7 +361,7 @@ task GermlineCNVCallerCaseMode {
         tar xzf ~{gcnv_model_tar} -C gcnv-model
 
         read_count_files_list=~{write_lines(read_count_files)}
-        grep gz$ "$read_count_files_list" | xargs -l1 -P0 gunzip
+        grep gz$ "$read_count_files_list" | xargs -l1 -P0 gunzip -f
         sed 's/\.gz$//' "$read_count_files_list" \
             | awk '{print "--input "$0}' \
             > read_count_files.args
