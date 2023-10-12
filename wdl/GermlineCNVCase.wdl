@@ -248,6 +248,8 @@ task DetermineGermlineContigPloidyCaseMode {
         sed 's/\.gz$//' $read_count_files_list | \
             awk '{print "--input "$0}' > read_count_files.args
 
+        THEANO_COMPILEDIR=`mktemp -d -p /tmp`
+        export THEANO_FLAGS="base_compiledir=$THEANO_COMPILEDIR"
         gatk --java-options "-Xmx~{command_mem_mb}m" DetermineGermlineContigPloidy \
             --arguments_file read_count_files.args \
             --model input-contig-ploidy-model \
@@ -372,6 +374,9 @@ task GermlineCNVCallerCaseMode {
         }
 
         function run_gcnv_case() {
+            THEANO_COMPILEDIR=`mktemp -d -p /tmp`
+            export THEANO_FLAGS="base_compiledir=$THEANO_COMPILEDIR"
+
             gatk --java-options "-Xmx~{command_mem_mb}m"  GermlineCNVCaller \
                 --run-mode CASE \
                 --arguments_file read_count_files.args \

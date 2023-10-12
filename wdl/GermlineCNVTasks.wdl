@@ -496,6 +496,8 @@ task PostprocessGermlineCNVCalls {
 
         allosomal_contigs_args="--allosomal-contig ~{sep=" --allosomal-contig " allosomal_contigs}"
 
+        THEANO_COMPILEDIR=`mktemp -d -p /tmp`
+        export THEANO_FLAGS="base_compiledir=$THEANO_COMPILEDIR"
         time gatk --java-options "-Xmx~{command_mem_mb}m" PostprocessGermlineCNVCalls \
             --arguments_file calls_and_model_args.txt \
             ~{true="$allosomal_contigs_args" false="" allosomal_contigs_specified} \
