@@ -358,7 +358,7 @@ task DetermineGermlineContigPloidyCohortMode {
     command <<<
         set -euo pipefail
         mkdir ~{output_dir_}
-        export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk4_jar_override}
+        export GATK_LOCAL_JAR=~{default="/gatk/gatk.jar" gatk4_jar_override}
         export MKL_NUM_THREADS=~{cpu}
         export OMP_NUM_THREADS=~{cpu}
 
@@ -479,7 +479,7 @@ task GermlineCNVCallerCohortMode {
     command <<<
         set -euo pipefail
         mkdir ~{output_dir_}
-        export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk4_jar_override}
+        export GATK_LOCAL_JAR=~{default="/gatk/gatk.jar" gatk4_jar_override}
         export MKL_NUM_THREADS=~{cpu}
         export OMP_NUM_THREADS=~{cpu}
 

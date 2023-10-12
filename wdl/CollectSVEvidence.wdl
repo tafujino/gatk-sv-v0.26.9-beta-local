@@ -92,7 +92,7 @@ task RunCollectSVEvidence {
 
     set -euo pipefail
 
-    export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk_jar_override}
+    export GATK_LOCAL_JAR=~{default="/gatk/gatk.jar" gatk_jar_override}
 
     /gatk/gatk --java-options "-Xmx~{command_mem_mb}m" CollectSVEvidence \
         -I ~{cram} \

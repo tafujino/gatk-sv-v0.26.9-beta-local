@@ -46,7 +46,7 @@ task CollectCounts {
 
   command <<<
     set -euo pipefail
-    export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk4_jar_override}
+    export GATK_LOCAL_JAR=~{default="/gatk/gatk.jar" gatk4_jar_override}
 
     gatk --java-options "-Xmx~{command_mem_mb}m" CollectReadCounts \
       -L ~{intervals} \
@@ -101,7 +101,7 @@ task CondenseReadCounts {
 
   command <<<
     set -euo pipefail
-    export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk4_jar_override}
+    export GATK_LOCAL_JAR=~{default="/gatk/gatk.jar" gatk4_jar_override}
 
     zcat ~{counts} | grep '^@' | grep -v '@RG' > ref.dict
     zcat ~{counts} | grep -v '^@' | sed -e 1d | \

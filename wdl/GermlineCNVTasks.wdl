@@ -36,7 +36,7 @@ task AnnotateIntervals {
 
     command <<<
         set -euo pipefail
-        export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk4_jar_override}
+        export GATK_LOCAL_JAR=~{default="/gatk/gatk.jar" gatk4_jar_override}
 
         gatk --java-options "-Xmx~{command_mem_mb}m" AnnotateIntervals \
             -L ~{intervals} \
@@ -102,7 +102,7 @@ task FilterIntervals {
 
     command <<<
         set -euo pipefail
-        export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk4_jar_override}
+        export GATK_LOCAL_JAR=~{default="/gatk/gatk.jar" gatk4_jar_override}
 
         read_count_files_list=~{write_lines(read_count_files)}
         grep gz$ $read_count_files_list | xargs -l1 -P0 gunzip
@@ -174,7 +174,7 @@ task ScatterIntervals {
     command <<<
         set -euo pipefail
         mkdir ~{output_dir_}
-        export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk4_jar_override}
+        export GATK_LOCAL_JAR=~{default="/gatk/gatk.jar" gatk4_jar_override}
 
         {
             >&2 echo "Attempting to run IntervalListTools..."
@@ -368,17 +368,17 @@ task BundledPostprocessGermlineCNVCalls {
 
     command <<<
         set -euo pipefail
-        
-        export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk4_jar_override}
+
+        export GATK_LOCAL_JAR=~{default="/gatk/gatk.jar" gatk4_jar_override}
 
         # untar calls to CALLS_0, CALLS_1, etc directories and build the command line
         # also copy over shard config and interval files
         time tar xzf ~{invariants_tar}
         rm ~{invariants_tar}
-        number_of_shards=`find . -name 'CALLS_*' | wc -l` 
+        number_of_shards=`find . -name 'CALLS_*' | wc -l`
 
         touch calls_and_model_args.txt
-        for i in $(seq 0 `expr $number_of_shards - 1`); do 
+        for i in $(seq 0 `expr $number_of_shards - 1`); do
             echo "--calls-shard-path CALLS_$i" >> calls_and_model_args.txt
             echo "--model-shard-path MODEL_$i" >> calls_and_model_args.txt
         done
@@ -464,7 +464,7 @@ task PostprocessGermlineCNVCalls {
     command <<<
         set -euo pipefail
 
-        export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk4_jar_override}
+        export GATK_LOCAL_JAR=~{default="/gatk/gatk.jar" gatk4_jar_override}
 
         # untar calls to CALLS_0, CALLS_1, etc directories and build the command line
         # also copy over shard config and interval files
