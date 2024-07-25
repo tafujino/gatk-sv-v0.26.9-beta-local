@@ -507,6 +507,7 @@ task PostprocessGermlineCNVCalls {
             --output-genotyped-intervals ~{genotyped_intervals_vcf_filename} \
             --output-genotyped-segments ~{genotyped_segments_vcf_filename} \
             --output-denoised-copy-ratios ~{denoised_copy_ratios_filename}
+	rm -rf $THEANO_COMPILEDIR
     >>>
     runtime {
       cpu: select_first([runtime_attr.cpu_cores, default_attr.cpu_cores])

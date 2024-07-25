@@ -258,6 +258,7 @@ task DetermineGermlineContigPloidyCaseMode {
             --verbosity DEBUG \
             --mapping-error-rate ~{default="0.01" mapping_error_rate} \
             --sample-psi-scale ~{default="0.0001" sample_psi_scale}
+	rm -rf $THEANO_COMPILEDIR
 
         tar c -C ~{output_dir_}/case-calls . | gzip -1 > case-contig-ploidy-calls.tar.gz
     >>>
@@ -413,6 +414,8 @@ task GermlineCNVCallerCaseMode {
                 --caller-internal-admixing-rate ~{default="0.75" caller_internal_admixing_rate} \
                 --caller-external-admixing-rate ~{default="1.00" caller_external_admixing_rate} \
                 --disable-annealing ~{default="false" disable_annealing}
+
+	    rm -rf $THEANO_COMPILEDIR
         }
 
         {
