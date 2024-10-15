@@ -186,22 +186,22 @@ task CollectShardedVcfStats {
 
   command <<<
     set -eu -o pipefail
-  
+
     # Run QC script
     /opt/sv-pipeline/scripts/vcf_qc/collectQC.vcf_wide.sh \
       ~{vcf} \
       /opt/sv-pipeline/scripts/vcf_qc/SV_colors.txt \
       collectQC_vcfwide_output/
-    
+
     # Prep outputs
-    cp collectQC_vcfwide_output/data/VCF_sites.stats.bed.gz \
-      ~{prefix}.VCF_sites.stats.bed.gz
-    cp collectQC_vcfwide_output/data/VCF_sites.stats.bed.gz.tbi \
-      ~{prefix}.VCF_sites.stats.bed.gz.tbi
-    cp collectQC_vcfwide_output/analysis_samples.list \
-      ~{prefix}.analysis_samples.list
     tar -czvf ~{prefix}.collectQC_vcfwide_output.tar.gz \
       collectQC_vcfwide_output
+    mv collectQC_vcfwide_output/data/VCF_sites.stats.bed.gz \
+      ~{prefix}.VCF_sites.stats.bed.gz
+    mv collectQC_vcfwide_output/data/VCF_sites.stats.bed.gz.tbi \
+      ~{prefix}.VCF_sites.stats.bed.gz.tbi
+    mv collectQC_vcfwide_output/analysis_samples.list \
+      ~{prefix}.analysis_samples.list
   >>>
 
   output {
@@ -223,7 +223,7 @@ task SvtkVcf2bed {
   }
 
   String output_file = "~{prefix}.vcf2bed_subworkflow.bed.gz"
-  
+
   # simple record-by-record processing, overhead should be O(1), with disk space usage increased because the operation
   # is copying input into new format
   Float input_size = size(vcf, "GiB")
@@ -248,7 +248,7 @@ task SvtkVcf2bed {
 
   command <<<
     set -eu -o pipefail
-    
+
     svtk vcf2bed --info ALL ~{vcf} stdout \
       | bgzip -c \
       > "~{output_file}"
